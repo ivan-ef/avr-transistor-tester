@@ -2,7 +2,7 @@
 
 Component/Transistor tester based on famous [AVR Transistor Tester](https://www.mikrocontroller.net/articles/AVR_Transistortester) project. The reason I decided to create a custom PCB is that currently there is not good kit or complete device available that would fit my wishes:
 
-- ATMega364 MCU
+- ATMega644 MCU
 - 2.4" 65K colors LCD
 - Rotary encoder
 - USB-C charger with Li-Po battery
@@ -53,6 +53,6 @@ The software used in m-software version 1.53m (see [docs](https://github.com/mad
 
 ## Enclosure
 
-I designed a simple 3D printable enclosure that fits the PCB and provides easy access to ISP pins and USB-C charger. STEP files are located in the [3d-enclosure](https://github.com/vitaliy-bobrov/avr-transistor-tester/blob/main/3d-enclosure/) folder. Printing profile is available at [MakerWorld]() which would be handy if you have a BambuLab 3D printer.
+I designed a simple 3D printable enclosure that fits the PCB and provides easy access to ISP pins and USB-C charger. STEP files are located in the [3d-enclosure](https://github.com/vitaliy-bobrov/avr-transistor-tester/blob/main/3d-enclosure/) folder. Printing profile is available at [MakerWorld](https://makerworld.com/en/models/883799#profileId-838469) which would be handy if you have a BambuLab 3D printer.
 
 The assembled PCB with display is mounted to enclosure using spacers that came with Waveshare display using 4 x M2x8mm and 4 x M2x16mm screws. the battery is fixed on the backplate with double sided 3M foam.
