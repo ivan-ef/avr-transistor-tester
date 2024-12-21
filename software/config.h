@@ -644,6 +644,8 @@
 
 #define SW_HFE_CURRENT
 
+#define SW_C_BE
+
 
 /*
  *  R/C/L monitors
@@ -653,11 +655,11 @@
  *  - uncomment to enable (one or more)
  */
 
-//#define SW_MONITOR_R          /* just R */
-//#define SW_MONITOR_C          /* just C plus ESR */
-//#define SW_MONITOR_L          /* just L */
-//#define SW_MONITOR_RCL        /* R plus L, or C plus ESR */
-//#define SW_MONITOR_RL         /* R plus L */
+#define SW_MONITOR_R          /* just R */
+#define SW_MONITOR_C          /* just C plus ESR */
+#define SW_MONITOR_L          /* just L */
+#define SW_MONITOR_RCL        /* R plus L, or C plus ESR */
+#define SW_MONITOR_RL         /* R plus L */
 
 
 /*
@@ -666,8 +668,8 @@
  *  - uncomment to enable (one or more)
  */
 
-//#define SW_MONITOR_HOLD_ESR   /* auto-hold ESR (C monitor) */
-//#define SW_MONITOR_HOLD_L     /* auto-hold L (L monitor) */
+#define SW_MONITOR_HOLD_ESR   /* auto-hold ESR (C monitor) */
+#define SW_MONITOR_HOLD_L     /* auto-hold L (L monitor) */
 
 
 /*
@@ -1225,7 +1227,7 @@
  *  - uncomment to enable
  */
 
-//#define UI_TEST_PAGEMODE
+#define UI_TEST_PAGEMODE
 
 
 /*
@@ -1413,7 +1415,7 @@
  *  - will be updated by self-adjustment
  */
 
-#define C_ZERO           47
+#define C_ZERO           43
 
 
 /*

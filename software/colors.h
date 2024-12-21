@@ -219,18 +219,18 @@
   /* component color codes */
   #define COLOR_CODE_BLACK    0x0000    /* RGB 000000 */
   #define COLOR_CODE_BROWN    0xcb25    /* RGB CE652C */
-  #define COLOR_CODE_RED      COLOR_RED
-  #define COLOR_CODE_ORANGE   COLOR_ORANGE
-  #define COLOR_CODE_YELLOW   COLOR_YELLOW
-  #define COLOR_CODE_GREEN    COLOR_PALE_GREEN
-  #define COLOR_CODE_BLUE     COLOR_CYAN
-  #define COLOR_CODE_VIOLET   COLOR_MAGENTA
+  #define COLOR_CODE_RED      0xf800    /* RGB F80000 */
+  #define COLOR_CODE_ORANGE   0xfe40    /* RGB FFCB00 */
+  #define COLOR_CODE_YELLOW   0xffe0    /* RGB F8FC00 */
+  #define COLOR_CODE_GREEN    0x07e0    /* RGB 00FC00 */
+  #define COLOR_CODE_BLUE     0x001f    /* RGB 0000F8 */
+  #define COLOR_CODE_VIOLET   0xca19    /* RGB CF40CF */
   #define COLOR_CODE_GREY     0xf79e    /* RGB F0F0F0 */
   #define COLOR_CODE_WHITE    0xffff    /* RGB FFFFFF */
   #define COLOR_CODE_GOLD     0xf606    /* RGB F6C337 */
   #define COLOR_CODE_SILVER   0xe71c    /* RGB E0E0E0 */
   /* component's body color */
-  #define COLOR_CODE_NONE     COLOR_WHITE
+  #define COLOR_CODE_NONE     0x06ff    /* RGB 06DCF9 */
 #endif
 
 
