@@ -644,6 +644,11 @@
 
 #define SW_HFE_CURRENT
 
+/*
+ *  display C_be (base-emitter capacitance) for BJTs
+ *  - uncomment to enable
+ */
+
 #define SW_C_BE
 
 
