@@ -2,8 +2,8 @@
  *
  *   common header file
  *
- *   (c) 2012-2024 by Markus Reschke
- *   based on code from Markus Frejek and Karl-Heinz Kübbeler
+ *   (c) 2012-2025 by Markus Reschke
+ *   based on code from Markus Frejek and Karl-Heinz Kï¿½bbeler
  *
  * ************************************************************************ */
 
@@ -69,6 +69,7 @@
 #define KEY_POWER_OFF         103  /* power off */
 #define KEY_PROBE             104  /* probe component */
 #define KEY_EXIT              105  /* exit (menu) */
+#define KEY_DEFAULTS          106  /* set defaults (adjustments) */
 
 
 /* operation mode/state flags (bitfield) */
@@ -98,7 +99,7 @@
 /* storage modes (ID and bitfield) */
 #define STORAGE_LOAD          0b00000001     /* load adjustment values (ID) */
 #define STORAGE_SAVE          0b00000010     /* save adjustment values (ID) */
-#define STORAGE_SHORT         0b00000100     /* short menu (flag) */ 
+#define STORAGE_SHORT         0b00000100     /* short menu (flag) */
 
 
 /* SPI */
@@ -202,7 +203,7 @@
 #define CMD_MSG               12   /* return error message */
 #define CMD_QTY               13   /* return component quantity */
 #define CMD_NEXT              14   /* select next component */
-#define CMD_TYPE              15   /* return more sepcific type */
+#define CMD_TYPE              15   /* return more specific type */
 #define CMD_HINT              16   /* return hints on special features */
 #define CMD_MHINT             17   /* return hints on measurements */
 #define CMD_PIN               18   /* return pinout */
@@ -316,7 +317,7 @@
 #define TYPE_SYMMETRICAL      0b01000000     /* symmetrical drain/source */
 
 
-/* BJT types (bitfield) */ 
+/* BJT types (bitfield) */
 #define TYPE_NPN              0b00000001     /* NPN */
 #define TYPE_PNP              0b00000010     /* PNP */
 #define TYPE_PARASITIC        0b00000100     /* parasitic BJT */
@@ -363,7 +364,7 @@
 #define LCD_CHAR_DIODE_CA     2	   /* diode icon '|<' */
 #define LCD_CHAR_CAP          3    /* capacitor icon '||' */
 #define LCD_CHAR_OMEGA        4    /* omega */
-#define LCD_CHAR_MICRO        5    /* µ (micro) */
+#define LCD_CHAR_MICRO        5    /* ï¿½ (micro) */
 #define LCD_CHAR_RESISTOR_L   6    /* resistor icon left part '[' */
 #define LCD_CHAR_RESISTOR_R   7    /* resistor icon right part ']' */
 
@@ -625,13 +626,13 @@ typedef struct
 /* checking/probing */
 typedef struct
 {
-  uint8_t           Found;         /* component type */ 
+  uint8_t           Found;         /* component type */
   uint8_t           Type;          /* component specific subtype */
   uint8_t           Done;          /* flag for transistor detection done */
   uint8_t           AltFound;      /* alternative component type */
   uint8_t           Resistors;     /* number of resistors found */
   uint8_t           Diodes;        /* number of diodes found */
-  uint8_t           Probe;         /* error: probe pin */ 
+  uint8_t           Probe;         /* error: probe pin */
   uint16_t          U;             /* error: voltage in mV */
   #ifdef SW_SYMBOLS
   uint8_t           Symbol;        /* symbol ID */
@@ -670,7 +671,7 @@ typedef struct
 typedef struct
 {
   int8_t            Scale;         /* exponent of factor (value * 10^x) */
-  unsigned long     Value;         /* inductance */  
+  unsigned long     Value;         /* inductance */
 } Inductor_Type;
 
 
@@ -707,7 +708,7 @@ typedef struct
   int8_t            C_scale;       /* exponent of factor (value * 10^x) */
 } Semi_Type;
 
-/* 
+/*
   Mapping
 
            BJT          FET          SCR          Triac        IGBT
@@ -716,8 +717,8 @@ typedef struct
   B        Collector    Drain        Anode        MT2          Collector
   C        Emitter      Source       Cathode      MT1          Emitter
   U_1      V_BE (mV)    R_DS (0.01)  V_GT (mV)    V_GT (mV)
-  U_2      I_E (µA)     V_th (mV)                              V_th (mV)
-  U_3      I_C/E (µA)   V_GS(off)
+  U_2      I_E (ï¿½A)     V_th (mV)                              V_th (mV)
+  U_3      I_C/E (ï¿½A)   V_GS(off)
   F_1      hFE                                    MT2 (mV)
   F_2      hFEr
   I_value  I_CEO        I_DSS
@@ -741,7 +742,7 @@ typedef struct
   uint16_t          U_2;           /* voltage #2 */
 } AltSemi_Type;
 
-/* 
+/*
   Mapping
 
           PUT         UJT
@@ -749,7 +750,7 @@ typedef struct
   A       Gate        Emitter
   B       Anode       B2
   C       Cathode     B1
-  U_1     V_f
+  U_1ï¿½    V_f
   U_2     V_T
 */
 
@@ -766,7 +767,7 @@ typedef struct
   uint16_t          Val1;          /* value #1 */
 } Info_Type;
 
-/* 
+/*
   Mapping
 
           R   C           D    BJT        FET    IGBT
@@ -788,7 +789,7 @@ typedef struct
 typedef struct
 {
   uint8_t           Byte;          /* address/data byte */
-  uint8_t           Timeout;       /* ACK timeout in 10µs */
+  uint8_t           Timeout;       /* ACK timeout in 10ï¿½s */
 } I2C_Type;
 
 

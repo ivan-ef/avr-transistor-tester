@@ -2,7 +2,7 @@
  *
  *   L/C meter (hardware option)
  *
- *   (c) 2020-2023 by Markus Reschke
+ *   (c) 2020-2025 by Markus Reschke
  *
  * ************************************************************************ */
 
@@ -82,13 +82,13 @@
  *     known reference cap which can be enabled via a relay. A second relay
  *     selects the DUT (L or C). C_x is connected in parallel to the LC
  *     tank circuit, and L_x in series with L from the LC tank circuit.
- *   - max. frequency of LC oscillator (L_i 82µH / C_i 1nF): about 600kHz
+ *   - max. frequency of LC oscillator (L_i 82 ï¿½H / C_i 1 nF): about 600 kHz
  * ************************************************************************ */
 
 
 /*
  *  hints:
- *  - pin assigment:
+ *  - pin assignment:
  *    f_out     COUNTER_IN      T0
  *    C_p       LC_CTRL_CP      reference cap
  *    L/C       LC_CTRL_LC      L/C mode selection
@@ -112,7 +112,7 @@ Measuring C
 - With f_i/f_x we get:
   f_i/f_x = (2pi * sqrt(L_i * (C_i + C_x))) / (2pi * sqrt (L_i * C_i)))
   (f_i/f_x)^2 = (L_i * (C_i + C_x)) / (L_i * C_i)
-              = (C_i + C_x) / C_i 
+              = (C_i + C_x) / C_i
   C_x = C_i * ((f_i/f_x)^2 - 1)
 
 Measurement of C_i by using a known reference cap C_p
@@ -134,13 +134,13 @@ Measuring L
       = (1 / (C_i * (2pi)^2)) * ((1 / f_s^2) - (1 / f_i^2))
 
 Measurement ranges:
-- L_i 82µH / C_i 1nF (base frequency around 595 kHz)
+- L_i 82ï¿½H / C_i 1nF (base frequency around 595 kHz)
   firmware enforces a lower frequency limit of 10 kHz
 
   Mode  feasible         theoretically   PIC LC Meter
   ------------------------------------------------------
   L     1nH - 150mH      0.2nH - 250mH   10nH - 100mH
-  C     10fF - 33nF      3.3fF - 3.5µF   0.1pF - 900nF
+  C     10fF - 33nF      3.3fF - 3.5ï¿½F   0.1pF - 900nF
              - 120nF with signal clean-up
 */
 
@@ -188,9 +188,9 @@ uint8_t Get_LC_Frequency(void)
       auto ranging
 
       Timer1 top value (gate time)
-      - top = gatetime * MCU_cycles / prescaler 
-      - gate time in µs
-      - MCU cycles per µs
+      - top = gatetime * MCU_cycles / prescaler
+      - gate time in ï¿½s
+      - MCU cycles per ï¿½s
       - top max. 2^16 - 1
 
       Frequency
@@ -237,7 +237,7 @@ uint8_t Get_LC_Frequency(void)
     /* calculate compare value for Timer1 (gate time) */
     /* top = gatetime * MCU_cycles / timer prescaler */
     Value = GateTime;                   /* gatetime (in ms) */
-    /* * MCU cycles per µs and scale gatetime to µs */
+    /* * MCU cycles per ï¿½s and scale gatetime to ï¿½s */
     Value *= (MCU_CYCLES_PER_US * 1000);
     Value /= Top;                       /* divide by timer prescaler */
     Top = (uint16_t)Value;              /* use lower 16 bit */
@@ -465,7 +465,7 @@ void LC_Calc_L()
   t_i *= 1000000;                         /* rescale to 10^-2 */
 
   /* L_x = <capacitance term> * <frequency term> */
-  t_i *= t_s;                 /* in µH (10^-6) */
+  t_i *= t_s;                 /* in ï¿½H (10^-6) */
 
   /* additional scaling for low values */
   if (t_i < 1000ULK)          /* < 1 mH */
@@ -476,8 +476,8 @@ void LC_Calc_L()
   }
   else                        /* >= 1 nH */
   {
-    /* keep µH scale */
-    Inductor.Scale = -6;      /* for µH */
+    /* keep ï¿½H scale */
+    Inductor.Scale = -6;      /* for ï¿½H */
   }
 
   /* get integer part incl. rounding */
@@ -543,10 +543,10 @@ uint8_t LC_SelfAdjust(void)
         }
         /* else: invalid f_p */
       }
-      /* else: aborted by user feedback */      
+      /* else: aborted by user feedback */
 
       /* disable reference cap C_p */
-      LC_CTRL_DDR &= ~(1 << LC_CTRL_CP);     /* set C_p to HiZ mode */  
+      LC_CTRL_DDR &= ~(1 << LC_CTRL_CP);     /* set C_p to HiZ mode */
     }
     /* else: f_i out of range */
   }
@@ -640,7 +640,7 @@ uint8_t LC_Meter(void)
         /* set control line for L/C selection low */
         LC_CTRL_PORT &= ~(1 << LC_CTRL_LC);       /* clear bit */
       }
-      else                         /* measue L */
+      else                         /* measure L */
       {
         /* set control line for L/C selection high */
         LC_CTRL_PORT |= (1 << LC_CTRL_LC);        /* set bit */
@@ -768,8 +768,8 @@ uint8_t LC_Meter(void)
       }
       else if (Test == KEY_LONG)        /* long key press */
       {
-        /* repeat self-ajustment */
-        Test = LC_SelfAdjust();         /* run self-ajustment */
+        /* repeat self-adjustment */
+        Test = LC_SelfAdjust();         /* run self-ajdustment */
 
         if (Test)                       /* adjustment done */
         {
@@ -831,7 +831,7 @@ uint8_t LC_Meter(void)
         }
       }
 
-      Run &= ~(SHOW_VALUE | NO_VALUE);  /* clear flags */      
+      Run &= ~(SHOW_VALUE | NO_VALUE);  /* clear flags */
     }
   }
 
@@ -840,7 +840,7 @@ uint8_t LC_Meter(void)
    *  clean up
    */
 
-  /* filter control lines which were in input mode */ 
+  /* filter control lines which were in input mode */
   CtrlDir ^= (1 << LC_CTRL_CP) | (1 << LC_CTRL_LC);
   CtrlDir &= (1 << LC_CTRL_CP) | (1 << LC_CTRL_LC);
   LC_CTRL_DDR &= ~CtrlDir;         /* set former direction */

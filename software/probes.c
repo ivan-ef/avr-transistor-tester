@@ -2,8 +2,8 @@
  *
  *   probing testpins
  *
- *   (c) 2012-2022 by Markus Reschke
- *   based on code from Markus Frejek and Karl-Heinz Kübbeler
+ *   (c) 2012-2025 by Markus Reschke
+ *   based on code from Markus Frejek and Karl-Heinz Kï¿½bbeler
  *
  * ************************************************************************ */
 
@@ -57,7 +57,7 @@ void UpdateProbes(uint8_t Probe1, uint8_t Probe2, uint8_t Probe3)
   Probes.Rh_2 = DATA_read_byte(&Rh_table[Probe2]);
   Probes.Rh_3 = DATA_read_byte(&Rh_table[Probe3]);
 
-  /* set register bits for ADC port pins based on ID */ 
+  /* set register bits for ADC port pins based on ID */
   Probes.Pin_1 = DATA_read_byte(&Pin_table[Probe1]);
   Probes.Pin_2 = DATA_read_byte(&Pin_table[Probe2]);
   Probes.Pin_3 = DATA_read_byte(&Pin_table[Probe3]);
@@ -175,11 +175,11 @@ uint8_t ShortedPair(uint8_t Probe1, uint8_t Probe2)
   Max = (Cfg.Vcc / 2) + 30;        /* upper voltage */
 
   if ((U1 > Min) && (U1 < Max))    /* U1 within window */
-  { 
+  {
     if ((U2 > Min) && (U2 < Max))  /* U2 within window */
     {
       Flag = 1;                    /* about the same */
-    }    
+    }
   }
 
   R_DDR = 0;             /* reset port */
@@ -206,7 +206,7 @@ uint8_t ShortedProbes(void)
   Flag += ShortedPair(PROBE_1, PROBE_3);
   Flag += ShortedPair(PROBE_2, PROBE_3);
 
-  return Flag;  
+  return Flag;
 }
 
 
@@ -240,7 +240,7 @@ void DischargeCap(uint8_t Probe1, uint8_t Probe2)
 
   UpdateProbes2(Probe1, Probe2);        /* update probes */
 
-  /* try probe-1 */ 
+  /* try probe-1 */
   ADC_DDR = Probes.Pin_1;          /* pull down probe-1 directly */
   U_1 = ReadU(Probes.Ch_2);        /* get voltage at probe-2 */
 
@@ -252,7 +252,7 @@ void DischargeCap(uint8_t Probe1, uint8_t Probe2)
   {
     /* reverse probes */
     UpdateProbes2(Probe2, Probe1);      /* update probes */
-  } 
+  }
 
 
   /*
@@ -320,7 +320,7 @@ void DischargeProbes(void)
 
 
   /*
-   *  set probes to a safe discharge mode (pull-down via Rh) 
+   *  set probes to a safe discharge mode (pull-down via Rh)
    */
 
   /* set ADC port to HiZ input */
@@ -397,7 +397,7 @@ void DischargeProbes(void)
     {
       Flags |= (1 << ID);               /* set flag for probe */
     }
-    else if (U_c < 800)                 /* extra pull-down */
+    else if (U_c < 400)                 /* extra pull-down (< 400mV) */
     {
       /* it's safe now to pull down probe pin directly */
       ADC_DDR |= DATA_read_byte(&Pin_table[ID]);
@@ -444,7 +444,7 @@ void DischargeProbes(void)
  *  - mask for probe resistors
  *  - pull mode (bit flags):
  *    PULL_DOWN  pull down
- *    PULL_UP    pull up 
+ *    PULL_UP    pull up
  *    PULL_1MS   for 1ms
  *    PULL_10MS  for 10ms
  */
@@ -492,7 +492,7 @@ void PullProbe(uint8_t Mask, uint8_t Mode)
  *  - table ID
  *
  *  returns:
- *  - multiplicator/factor
+ *  - multiplier/factor
  */
 
 uint16_t GetFactor(uint16_t U_in, uint8_t ID)
@@ -544,7 +544,7 @@ uint16_t GetFactor(uint16_t U_in, uint8_t ID)
    */
 
   /* difference to start of table */
-  if (U_in >= TabStart) U_Diff = U_in - TabStart;  
+  if (U_in >= TabStart) U_Diff = U_in - TabStart;
   else U_Diff = 0;
 
   /* calculate table index */
@@ -581,8 +581,8 @@ uint16_t GetFactor(uint16_t U_in, uint8_t ID)
  *    first value   second value   description
  *    --------------------------------------------------------
  *    Semi.I_value  Semi.C_value   norm value (10-99, 100-999)
- *    Semi.I_scale  Semi.C_scale   multiplicator (10^n)
- *    [Semi.A       Semi.B         index number (1-)] 
+ *    Semi.I_scale  Semi.C_scale   multiplier (10^n)
+ *    [Semi.A       Semi.B         index number (1-)]
  *  - range 10-99 for E series <= E24
  *    range 100-999 for E series >= E48
  *
@@ -950,7 +950,7 @@ void CheckProbes(uint8_t Probe1, uint8_t Probe2, uint8_t Probe3)
    *  - high hFE Darlington plus long probe leads and/or noisy environment
    */
 
-  if (U_Rl > 15)         /* > 21µA */
+  if (U_Rl > 15)         /* > 21ï¿½A */
   {
     if (Check.Done == DONE_NONE)        /* not sure yet */
     {
@@ -1082,7 +1082,7 @@ void CheckProbes(uint8_t Probe1, uint8_t Probe2, uint8_t Probe3)
     }
 
     /*
-     *  We check for a diode even if we already found a component to get Vf, 
+     *  We check for a diode even if we already found a component to get Vf,
      *  since there could be a body/protection diode of a transistor.
      */
 
@@ -1093,7 +1093,7 @@ void CheckProbes(uint8_t Probe1, uint8_t Probe2, uint8_t Probe3)
   /*
    *  Check for a resistor (or another one)
    *  - if no other component is found yet
-   *  - if we've got a resistor already 
+   *  - if we've got a resistor already
    */
 
   if ((Check.Found == COMP_NONE) ||

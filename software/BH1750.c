@@ -2,7 +2,7 @@
  *
  *   functions for BH1750FVI (ambient light sensor, I2C bus)
  *
- *   (c) 2024 by Markus Reschke
+ *   (c) 2024-2025 by Markus Reschke
  *
  * ************************************************************************ */
 
@@ -11,8 +11,8 @@
  *  - pin assignment
  *    SCL      I2C: SCL
  *    SDA      I2C: SDA
- *    ADDR     Gnd or Vcc  
- *  - I2C clock modes: standard (100kHz) and fast (400kHz) 
+ *    ADDR     Gnd or Vcc
+ *  - I2C clock modes: standard (100kHz) and fast (400kHz)
  *  - Vcc 3.3V
  *    I2C pull-up resistors to 3.3V should be ok for a 5V ATmega
  */
@@ -35,7 +35,7 @@
 #define MODE_MANUAL      0    /* manual mode */
 #define MODE_AUTO        1    /* automatic mode */
 
-/* I2C addreses */
+/* I2C addresses */
 #define BH1750_I2C_ADDR_0     0b00100011     /* ADDR=0 0x23 */
 #define BH1750_I2C_ADDR_1     0b01011100     /* ADDR=1 0x5c */
 
@@ -115,7 +115,7 @@ uint8_t BH1750_SendCommand(uint8_t Command)
   if (I2C_Start(I2C_START) == I2C_OK)             /* start */
   {
     I2C.Byte = BH1750_I2C_ADDR << 1;              /* address (7 bits) & write (0) */
-    I2C.Timeout = 1;                              /* ACK timeout 10µs */
+    I2C.Timeout = 1;                              /* ACK timeout 10ï¿½s */
 
     /* send address & write bit, expect ACK from BH1750 */
     if (I2C_WriteByte(I2C_ADDRESS) == I2C_ACK)    /* address BH1750 */
@@ -163,7 +163,7 @@ uint8_t BH1750_ReadValue(uint16_t *Value)
   {
     /* address (7 bits) & read (1) */
     I2C.Byte = (BH1750_I2C_ADDR << 1) | 0b00000001;
-    I2C.Timeout = 1;                              /* ACK timeout 10µs */
+    I2C.Timeout = 1;                              /* ACK timeout 10ï¿½s */
 
     /* send address & read bit, expect ACK from BH1750 */
     if (I2C_WriteByte(I2C_ADDRESS) == I2C_ACK)    /* address BH1750 */
@@ -182,7 +182,7 @@ uint8_t BH1750_ReadValue(uint16_t *Value)
           RawValue |= I2C.Byte;                   /* copy low byte */
           *Value = RawValue;                      /* save result */
 
-          Flag = 1;                               /* signal success */          
+          Flag = 1;                               /* signal success */
         }
       }
     }
@@ -210,7 +210,7 @@ uint8_t BH1750_ReadValue(uint16_t *Value)
  *    low resolution        4 lx       16 ms      24 ms
  *  - modes
  *    continuously:  stay in power on mode
- *    one-time:      automaticly power down after measurement
+ *    one-time:      automatically power down after measurement
  */
 
 
@@ -279,12 +279,16 @@ uint8_t BH1750_ReadLux(uint32_t *Value, uint8_t *Scale)
 
 void BH1750_Tool(void)
 {
-  uint8_t           Flag = 1;           /* loop control */
+  uint8_t           Flag;               /* loop control */
   uint8_t           Test;               /* key / feedback */
   uint8_t           Mode = MODE_MANUAL; /* operation mode */
   uint16_t          Timeout = 0;        /* timeout for user feedback */
   uint8_t           Scale;              /* Lux scale / decimal places */
   uint32_t          Value;              /* Lux value */
+
+  /* local constants for Flag (bitfield) */
+  #define RUN_FLAG            0b00000001     /* run / otherwise end */
+  #define POWERUP_FLAG        0b00000010     /* power up BH1750 */
 
 
   /*
@@ -302,25 +306,11 @@ void BH1750_Tool(void)
 
 
   /*
-   *  power on BH1750
-   *  - BH1750 enters power down mode after Vcc is applied
-   */
-
-  /* send command: power up */
-  if (BH1750_SendCommand(BH1750_POWER_UP) == 0)   /* can't power on */
-  {
-    /* inform user */
-    LCD_ClearLine2();                   /* clear line #2 */
-    Display_EEString(Error_str);        /* display: Error */
-    WaitKey();                          /* wait for user feedback */
-
-    Flag = 0;                           /* don't proceed */
-  }
-
-
-  /*
    *  processing loop
    */
+
+  /* enter loop, power up BH1750 */
+  Flag = RUN_FLAG | POWERUP_FLAG;
 
   while (Flag)
   {
@@ -368,6 +358,30 @@ void BH1750_Tool(void)
 
 
     /*
+     *  power on BH1750
+     *  - only once after start
+     *  - BH1750 enters power-down mode after Vcc is applied
+     *  - this also checks if BH1750 is connected and responsive
+     */
+
+    if (Flag & POWERUP_FLAG)       /* power-up requested */
+    {
+      Flag &= ~POWERUP_FLAG;            /* clear flag */
+
+      /* send command: power up */
+      if (BH1750_SendCommand(BH1750_POWER_UP) == 0)    /* can't power on */
+      {
+        /* inform user */
+        Display_EEString(Error_str);        /* display: Error */
+        WaitKey();                          /* wait for user feedback */
+
+        Flag = 0;                           /* don't proceed */
+      }
+      /* else: ok */
+    }
+
+
+    /*
      *  read and show light intensity
      */
 
@@ -396,6 +410,15 @@ void BH1750_Tool(void)
    */
 
   BH1750_SendCommand(BH1750_POWER_DOWN);     /* send command: power down */
+
+
+  /*
+   *  clean up
+   */
+
+  /* local constants for Flag */
+  #undef RUN_FLAG
+  #undef POWERUP_FLAG
 }
 
 

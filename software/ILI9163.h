@@ -2,7 +2,7 @@
  *
  *   ILI9163 color graphic display controller
  *
- *   (c) 2017-2020 by Markus Reschke
+ *   (c) 2017-2025 by Markus Reschke
  *
  * ************************************************************************ */
 
@@ -62,7 +62,7 @@
 #define FLAG_STAT_VER_REV     0b00001000     /* decrement, bottom to top */
   /* row/column exchange: */
 #define FLAG_STAT_XY_NORM     0b00000000     /* normal */
-#define FLAG_STAT_XY_REV      0b00010000     /* rreversed (X & Y swapped) */
+#define FLAG_STAT_XY_REV      0b00010000     /* reversed (X & Y swapped) */
   /* column address order: */
 #define FLAG_STAT_COL_NORM    0b00000000     /* increment, left to right */
 #define FLAG_STAT_COL_REV     0b00100000     /* decrement, right to left */
@@ -80,7 +80,6 @@
   /* sleep mode: */
 #define FLAG_STAT_SLEEP_OFF   0b00000000     /* off */
 #define FLAG_STAT_SLEEP_ON    0b00000010     /* on */
-
   /* partial mode: */
 #define FLAG_STAT_PART_OFF    0b00000000     /* off */
 #define FLAG_STAT_PART_ON     0b00000100     /* on */
@@ -149,7 +148,7 @@
 
 
 /*
- *  read display MADCTL (memory acccess control)
+ *  read display MADCTL (memory access control)
  *  - 1 byte cmd + 2 bytes data (read mode)
  */
 
@@ -159,7 +158,7 @@
 
 /* data byte #2: status */
 /* same as byte #1 of CMD_MEM_CTRL */
-  /* horizontal refereshing direction: */
+  /* horizontal refreshing direction: */
 #define RFLAG_HREFRESH_NORM   0b00000000     /* left to right */
 #define RFLAG_HREFRESH_REV    0b00000100     /* right to left */
   /* color order: */
@@ -334,7 +333,7 @@
 
 
 /*
- *  set column address (accessable frame area)
+ *  set column address (accessible frame area)
  *  - 1 byte cmd + 4 bytes data
  */
 
@@ -350,7 +349,7 @@
 
 
 /*
- *  set row address (accessable frame area)
+ *  set row address (accessible frame area)
  *  - 1 byte cmd + 4 bytes data
  */
 
@@ -426,7 +425,7 @@
 
 
 /*
- *  disable tearing effect line 
+ *  disable tearing effect line
  *  - 1 byte cmd
  */
 
@@ -434,7 +433,7 @@
 
 
 /*
- *  enable tearing effect line 
+ *  enable tearing effect line
  *  - 1 byte cmd + 1 byte data
  */
 
@@ -447,7 +446,7 @@
 
 
 /*
- *  memory access control 
+ *  memory access control
  *  - 1 byte cmd + 1 byte data
  */
 
@@ -455,7 +454,7 @@
 
 /* data byte #1: read/write scanning direction of frame memory */
 /* same as byte #2 of CMD_READ_MADCTL */
-  /* horizontal refereshing direction: */
+  /* horizontal refreshing direction: */
 #define FLAG_HREFRESH_NORM    0b00000000     /* left to right */
 #define FLAG_HREFRESH_REV     0b00000100     /* right to left */
   /* color order: */
@@ -631,7 +630,7 @@
 
 #define CMD_GATE_DRV          0b10111000     /* set gate driver direction */
 
-/* data byte #1: soure output direction select register */
+/* data byte #1: source output direction select register */
 #define FLAG_GATEE_DRV_NORM   0b00000000     /* normal */
 #define FLAG_GATEE_DRV_REV    0b00000001     /* reversed */
 
@@ -725,7 +724,7 @@
 #define FLAG_APA_7            0b00000111     /* reserved */
 
 /* data byte #2: step-up cycles of booster circuit */
-                                             /* circuit 1 / circuits 2 & 3 */ 
+                                             /* circuit 1 / circuits 2 & 3 */
 #define FLAG_DCA_0            0b00000000     /* BCLK/1 / BCLK/4 */
 #define FLAG_DCA_1            0b00000001     /* BCLK/1 / BCLK/8 */
 #define FLAG_DCA_2            0b00000010     /* BCLK/1 / BCLK/8 */
@@ -754,7 +753,7 @@
 #define FLAG_APB_7            0b00000111     /* reserved */
 
 /* data byte #2: step-up cycles of booster circuit */
-                                             /* circuit 1 / circuits 2 & 3 */ 
+                                             /* circuit 1 / circuits 2 & 3 */
 #define FLAG_DCB_0            0b00000000     /* BCLK/1 / BCLK/4 */
 #define FLAG_DCB_1            0b00000001     /* BCLK/1 / BCLK/8 */
 #define FLAG_DCB_2            0b00000010     /* BCLK/1 / BCLK/8 */
@@ -783,7 +782,7 @@
 #define FLAG_APC_7            0b00000111     /* reserved */
 
 /* data byte #2: step-up cycles of booster circuit */
-                                             /* circuit 1 / circuits 2 & 3 */ 
+                                             /* circuit 1 / circuits 2 & 3 */
 #define FLAG_DCC_0            0b00000000     /* BCLK/1 / BCLK/4 */
 #define FLAG_DCC_1            0b00000001     /* BCLK/1 / BCLK/8 */
 #define FLAG_DCC_2            0b00000010     /* BCLK/1 / BCLK/8 */
